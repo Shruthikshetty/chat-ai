@@ -1,6 +1,5 @@
 import AppSidebar from "@/components/app-sidebar";
 import AppTopBar from "@/components/app-top-bar";
-import { SelectDemo } from "@/components/simple-select";
 import { useState } from "react";
 
 const Home = () => {

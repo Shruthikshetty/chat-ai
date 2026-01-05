@@ -2,7 +2,6 @@ import { Menu, PanelLeft, Share, Trash2 } from "lucide-react";
 import { Button } from "./ui/button";
 import { ModelSelector } from "./model-selector";
 import { useState } from "react";
-import { SelectDemo } from "./simple-select";
 
 const AppTopBar = ({
   isSidebarOpen,
