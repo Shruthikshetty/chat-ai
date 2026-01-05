@@ -1,5 +1,8 @@
 import { Menu, PanelLeft, Share, Trash2 } from "lucide-react";
 import { Button } from "./ui/button";
+import { ModelSelector } from "./model-selector";
+import { useState } from "react";
+import { SelectDemo } from "./simple-select";
 
 const AppTopBar = ({
   isSidebarOpen,
@@ -8,6 +11,7 @@ const AppTopBar = ({
   isSidebarOpen: boolean;
   setIsSidebarOpen: (value: boolean) => void;
 }) => {
+  const [selectedModel, setSelectedModel] = useState("1");
   return (
     <header className="h-14 flex items-center justify-between px-4 border-b border-border/40 bg-background/50 backdrop-blur-md sticky top-0 z-10">
       {/* Tob bar */}
@@ -16,14 +20,21 @@ const AppTopBar = ({
           variant="ghost"
           size="icon"
           onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-          className="text-muted-foreground hover:text-foreground"
+          className="text-muted-foreground hover:text-foreground h-8 w-8"
         >
           {isSidebarOpen ? (
-            <PanelLeft className="w-5 h-5" />
+            <PanelLeft className="w-4 h-4" />
           ) : (
-            <Menu className="w-5 h-5" />
+            <Menu className="w-4 h-4" />
           )}
         </Button>
+
+        <div className="w-48">
+          <ModelSelector
+            selectedModel={selectedModel}
+            onModelChange={setSelectedModel}
+          />
+        </div>
       </div>
 
       <div className="flex items-center gap-2">
