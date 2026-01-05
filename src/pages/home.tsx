@@ -1,3 +1,4 @@
+import AppSidebar from "@/components/app-sidebar";
 import { Button } from "@/components/ui/button";
 import { Menu, PanelLeft, Share, Trash2 } from "lucide-react";
 import { useState } from "react";
@@ -13,6 +14,15 @@ const Home = () => {
           onClick={() => setIsSidebarOpen(false)}
         />
       )}
+      <AppSidebar
+        isOpen={isSidebarOpen}
+        onNewChat={() => {}}
+        sessions={[]}
+        activeSessionId={""}
+        onSelectSession={() => {}}
+        onDeleteSession={() => {}}
+        onClose={() => setIsSidebarOpen(false)}
+      />
       <main className="flex-1 flex flex-col h-full relative min-w-0">
         <header className="h-14 flex items-center justify-between px-4 border-b border-border/40 bg-background/50 backdrop-blur-md sticky top-0 z-10">
           {/* Tob bar */}
