@@ -11,6 +11,7 @@ import { ModelInitialMessage } from "@/constants/screen.constants";
 const Home = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([ModelInitialMessage]);
+  const [loading, setLoading] = useState(false);
 
   // function to add a new message
   const addMessage = ({
@@ -35,13 +36,13 @@ const Home = () => {
   const handleSend = async (message: string) => {
     // add the user message
     addMessage({ message, role: "user" });
-
+    setLoading(true);
     // generate reponse
     const { text } = await generateText({
       model: ollama("deepseek-r1:14b"),
       prompt: message,
     });
-
+    setLoading(false);
     // append the message to the messages state
     addMessage({ message: text, role: "assistant" });
   };
@@ -72,11 +73,11 @@ const Home = () => {
         />
 
         {/* list of messages */}
-        <MessageList messages={messages} isLoading={false} />
+        <MessageList messages={messages} isLoading={loading} />
 
         {/* message input */}
         <div className="p-4 bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/50">
-          <MessageInput onSend={handleSend} isLoading={false} />
+          <MessageInput onSend={handleSend} isLoading={loading} />
         </div>
       </main>
     </div>
