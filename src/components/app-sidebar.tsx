@@ -8,11 +8,17 @@ import {
   X,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Message } from "@/lib/types";
 
+export type Sessions = {
+  id: string;
+  title: string;
+  messages: Message[];
+};
 interface SidebarProps {
   isOpen: boolean;
   onNewChat: () => void;
-  sessions: any[];
+  sessions: Sessions[];
   activeSessionId: string | null;
   onSelectSession: (id: string) => void;
   onDeleteSession: (id: string) => void;
