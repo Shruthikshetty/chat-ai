@@ -1,9 +1,51 @@
 import AppSidebar from "@/components/app-sidebar";
 import AppTopBar from "@/components/app-top-bar";
+import { MessageInput } from "@/components/message-input";
+import { MessageList } from "@/components/message-list";
 import { useState } from "react";
+import { Message } from "@/lib/types";
+import { generateText } from "ai";
+import { ollama } from "@/config/olama.config";
+import { ModelInitialMessage } from "@/constants/screen.constants";
 
 const Home = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [messages, setMessages] = useState<Message[]>([ModelInitialMessage]);
+
+  // function to add a new message
+  const addMessage = ({
+    message,
+    role,
+  }: {
+    message: string;
+    role: "user" | "assistant";
+  }) => {
+    setMessages((prev) => [
+      ...prev,
+      {
+        id: Number(prev[prev.length - 1].id) + 1,
+        role,
+        content: message,
+        timestamp: Date.now(),
+      },
+    ]);
+  };
+
+  // handle send mesage
+  const handleSend = async (message: string) => {
+    // add the user message
+    addMessage({ message, role: "user" });
+
+    // generate reponse
+    const { text } = await generateText({
+      model: ollama("deepseek-r1:14b"),
+      prompt: message,
+    });
+
+    // append the message to the messages state
+    addMessage({ message: text, role: "assistant" });
+  };
+
   return (
     <div className="flex h-screen bg-background overflow-hidden font-sans text-foreground selection:bg-primary/20">
       {/* Sidebar with overlay for mobile */}
@@ -28,6 +70,14 @@ const Home = () => {
           isSidebarOpen={isSidebarOpen}
           setIsSidebarOpen={setIsSidebarOpen}
         />
+
+        {/* list of messages */}
+        <MessageList messages={messages} isLoading={false} />
+
+        {/* message input */}
+        <div className="p-4 bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/50">
+          <MessageInput onSend={handleSend} isLoading={false} />
+        </div>
       </main>
     </div>
   );
