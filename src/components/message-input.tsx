@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { useSelecteModel } from "@/state-management/selected-mode-store";
 import { Send, Square } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 
@@ -12,7 +13,7 @@ interface MessageInputProps {
 export function MessageInput({ onSend, isLoading, onStop }: MessageInputProps) {
   const [input, setInput] = useState("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-
+  const selectedModel = useSelecteModel((state) => state.selectedModel);
   // Auto-resize textarea
   useEffect(() => {
     if (textareaRef.current) {
@@ -42,7 +43,7 @@ export function MessageInput({ onSend, isLoading, onStop }: MessageInputProps) {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder="Message Llama 3..."
+          placeholder={`Message ${selectedModel?.name}`}
           className="min-h-[24px] max-h-[200px] w-full resize-none bg-transparent border-0 focus-visible:ring-0 p-3 shadow-none text-base"
           data-testid="input-message"
         />
