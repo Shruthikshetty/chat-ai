@@ -1,19 +1,41 @@
 import { app, BrowserWindow } from "electron";
 import path from "node:path";
 import started from "electron-squirrel-startup";
-import { spawn, ChildProcess } from "child_process";
+import { spawn, ChildProcess, exec } from "child_process";
 
 let ollamaProcess: ChildProcess | null = null;
 const startOllama = () => {
-  console.log("Starting Ollama server...");
-  // Spawn ollama serve, but hide logs as requested
-  ollamaProcess = spawn("ollama", ["serve"]);
+  const spawnOllamaProcess = () => {
+    console.log("Starting Ollama server...");
+    // Spawn ollama serve, but hide logs as requested
+    ollamaProcess = spawn("ollama", ["serve"]);
 
-  // We are not attaching data listeners to stdout/stderr to hide logs.
+    // We are not attaching data listeners to stdout/stderr to hide logs.
 
-  ollamaProcess.on("close", (code) => {
-    console.log(`Ollama process exited with code ${code}`);
-  });
+    ollamaProcess.on("close", (code) => {
+      console.log(`Ollama process exited with code ${code}`);
+    });
+  };
+
+  //check for ollama process in windows
+  if (process.platform === "win32") {
+    exec('tasklist /FI "IMAGENAME eq ollama.exe"', (err, stdout) => {
+      if (err) {
+        console.error(`Error checking for process: ${err}`);
+        spawnOllamaProcess();
+        return;
+      }
+
+      if (stdout.toLowerCase().includes("ollama.exe")) {
+        console.log("Ollama is already running. Skipping start.");
+        return;
+      }
+
+      spawnOllamaProcess();
+    });
+  } else {
+    spawnOllamaProcess();
+  }
 };
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
