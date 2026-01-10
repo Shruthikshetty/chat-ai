@@ -1,33 +1,40 @@
 import { Message } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import ReactMarkdown from "react-markdown";
-import { Bot, User, Volume2, Copy, Check } from "lucide-react";
+import { Bot, User, Volume2, Copy, Check, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 // @ts-ignore
 import generatedImage from "@/assets/bot-icon.png";
 import LoadingWithBot from "./loading-with-bot";
+import { useKokoro } from "@/hooks/use-kokoro";
+
 interface MessageListProps {
   messages: Message[];
   isLoading?: boolean;
 }
 
 export function MessageList({ messages, isLoading }: MessageListProps) {
+  const { speak, stop, isLoading: isVoiceLoading, isSpeaking } = useKokoro();
   const [speakingId, setSpeakingId] = useState<string | null>(null);
   const [copiedId, setCopiedId] = useState<string | null>(null);
 
-  const handleSpeak = (text: string, id: string) => {
+  // Sync internal speakingId with actual hook state
+  useEffect(() => {
+    if (!isSpeaking) {
+      setSpeakingId(null);
+    }
+  }, [isSpeaking]);
+
+  const handleSpeak = async (text: string, id: string) => {
     if (speakingId === id) {
-      window.speechSynthesis.cancel();
+      stop();
       setSpeakingId(null);
       return;
     }
 
-    window.speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.onend = () => setSpeakingId(null);
     setSpeakingId(id);
-    window.speechSynthesis.speak(utterance);
+    await speak(text);
   };
 
   const handleCopy = async (text: string, id: string) => {
@@ -139,8 +146,18 @@ export function MessageList({ messages, isLoading }: MessageListProps) {
                     onClick={() =>
                       handleSpeak(message.content, message.id.toString())
                     }
+                    disabled={isVoiceLoading}
+                    title={
+                      isVoiceLoading
+                        ? "Loading voice model..."
+                        : "Speak message"
+                    }
                   >
-                    <Volume2 className="w-3.5 h-3.5" />
+                    {isVoiceLoading ? (
+                      <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                    ) : (
+                      <Volume2 className="w-3.5 h-3.5" />
+                    )}
                   </Button>
                 )}
               </div>

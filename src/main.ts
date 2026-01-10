@@ -1,20 +1,6 @@
 import { app, BrowserWindow } from "electron";
 import path from "node:path";
 import started from "electron-squirrel-startup";
-import { spawn, ChildProcess } from "child_process";
-
-let ollamaProcess: ChildProcess | null = null;
-const startOllama = () => {
-  console.log("Starting Ollama server...");
-  // Spawn ollama serve, but hide logs as requested
-  ollamaProcess = spawn("ollama", ["serve"]);
-
-  // We are not attaching data listeners to stdout/stderr to hide logs.
-
-  ollamaProcess.on("close", (code) => {
-    console.log(`Ollama process exited with code ${code}`);
-  });
-};
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (started) {
@@ -48,15 +34,7 @@ const createWindow = () => {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on("ready", () => {
-  startOllama();
   createWindow();
-});
-
-app.on("before-quit", () => {
-  if (ollamaProcess) {
-    console.log("Killing Ollama server...");
-    ollamaProcess.kill();
-  }
 });
 
 // Quit when all windows are closed, except on macOS. There, it's common
