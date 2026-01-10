@@ -4,23 +4,58 @@ import { MessageInput } from "@/components/message-input";
 import { MessageList } from "@/components/message-list";
 import { useState } from "react";
 import { Message } from "@/lib/types";
+import { createOllama } from "ollama-ai-provider-v2";
+import { generateText } from "ai";
 
-const MOCK_MESSAGES: Message[] = [
-  {
-    id: "1",
-    role: "assistant",
-    content: "Hello! How can I help you today?",
-    timestamp: Date.now(),
-  },
-];
+//initialize the ollama provider
+const ollama = createOllama({
+  baseURL: "http://localhost:11434/api",
+});
 
 const Home = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [messages, setMessages] = useState<Message[]>([
+    {
+      id: "1",
+      role: "assistant",
+      content: "Hello! How can I help you today?",
+      timestamp: Date.now(),
+    },
+  ]);
 
   // handle send mesage
-  const handleSend = (message: string) => {
-    console.log(message);
+  const handleSend = async (message: string) => {
+    // add the user message
+    setMessages((prev) => [
+      ...prev,
+      {
+        id: (Number(prev[prev.length - 1].id) + 1).toString(),
+        role: "user",
+        content: message,
+        timestamp: Date.now(),
+      },
+    ]);
+
+    // generate reponse
+    const { text } = await generateText({
+      model: ollama("deepseek-r1:14b"),
+      prompt: message,
+    });
+
+    // temp
+    console.log(text);
+    // append the message to the messages state
+    setMessages((prev) => [
+      ...prev,
+      {
+        id: (Number(prev[prev.length - 1].id) + 1).toString(),
+        role: "assistant",
+        content: text,
+        timestamp: Date.now(),
+      },
+    ]);
   };
+
   return (
     <div className="flex h-screen bg-background overflow-hidden font-sans text-foreground selection:bg-primary/20">
       {/* Sidebar with overlay for mobile */}
@@ -47,7 +82,7 @@ const Home = () => {
         />
 
         {/* list of messages */}
-        <MessageList messages={MOCK_MESSAGES} isLoading={false} />
+        <MessageList messages={messages} isLoading={false} />
 
         {/* message input */}
         <div className="p-4 bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/50">
