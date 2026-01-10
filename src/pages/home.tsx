@@ -7,11 +7,14 @@ import { Message } from "@/lib/types";
 import { generateText } from "ai";
 import { ollama } from "@/config/olama.config";
 import { ModelInitialMessage } from "@/constants/screen.constants";
+import { useSelecteModel } from "@/state-management/selected-mode-storel";
 
 const Home = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([ModelInitialMessage]);
   const [loading, setLoading] = useState(false);
+  // get selected model from store
+  const selectedModel = useSelecteModel((state) => state.selectedModel);
 
   // function to add a new message
   const addMessage = ({
@@ -39,7 +42,7 @@ const Home = () => {
     setLoading(true);
     // generate reponse
     const { text } = await generateText({
-      model: ollama("deepseek-r1:14b"),
+      model: ollama(selectedModel),
       prompt: message,
     });
     setLoading(false);
