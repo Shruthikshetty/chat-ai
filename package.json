@@ -2,7 +2,7 @@
   "name": "chat-ai",
   "productName": "chat-ai",
   "version": "1.0.0",
-  "description": "My Electron application description",
+  "description": "ai chat for ollama",
   "main": ".vite/build/main.js",
   "scripts": {
     "start": "electron-forge start",

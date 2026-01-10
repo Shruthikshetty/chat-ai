@@ -1,7 +1,6 @@
 import { Menu, PanelLeft, Share, Trash2 } from "lucide-react";
 import { Button } from "./ui/button";
 import { ModelSelector } from "./model-selector";
-import { useState } from "react";
 
 const AppTopBar = ({
   isSidebarOpen,
