@@ -7,7 +7,7 @@ import { Message } from "@/lib/types";
 import { generateText } from "ai";
 import { ollama } from "@/config/olama.config";
 import { ModelInitialMessage } from "@/constants/screen.constants";
-import { useSelecteModel } from "@/state-management/selected-mode-storel";
+import { useSelecteModel } from "@/state-management/selected-mode-store";
 
 const Home = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -40,9 +40,15 @@ const Home = () => {
     // add the user message
     addMessage({ message, role: "user" });
     setLoading(true);
+    // check if model is not selected
+    if (!selectedModel) {
+      setLoading(false);
+      addMessage({ message: "please select a model", role: "assistant" });
+      return;
+    }
     // generate reponse
     const { text } = await generateText({
-      model: ollama(selectedModel),
+      model: ollama(selectedModel?.id),
       prompt: message,
     });
     setLoading(false);

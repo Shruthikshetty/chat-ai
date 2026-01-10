@@ -10,7 +10,6 @@ const AppTopBar = ({
   isSidebarOpen: boolean;
   setIsSidebarOpen: (value: boolean) => void;
 }) => {
-  const [selectedModel, setSelectedModel] = useState("1");
   return (
     <header className="h-14 flex items-center justify-between px-4 border-b border-border/40 bg-background/50 backdrop-blur-md sticky top-0 z-10">
       {/* Tob bar */}
@@ -29,10 +28,7 @@ const AppTopBar = ({
         </Button>
 
         <div className="w-48">
-          <ModelSelector
-            selectedModel={selectedModel}
-            onModelChange={setSelectedModel}
-          />
+          <ModelSelector />
         </div>
       </div>
 

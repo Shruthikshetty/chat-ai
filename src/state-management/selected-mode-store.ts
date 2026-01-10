@@ -1,13 +1,14 @@
 // this contains the global state of the selected model
+import { Model } from "@/lib/types";
 import { create } from "zustand";
 
 type SelectedModelStore = {
-  selectedModel: string;
-  setSelectedModel: (model: string) => void;
+  selectedModel?: Model;
+  setSelectedModel: (model: Model) => void;
 };
 
 const inititalState: SelectedModelStore = {
-  selectedModel: "deepseek-r1:14b",
+  selectedModel: undefined,
   setSelectedModel: () => {},
 };
 
