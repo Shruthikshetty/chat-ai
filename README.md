@@ -32,3 +32,11 @@ To package the application:
 ```bash
 npm run package
 ```
+
+## 📦 Installation
+
+https://github.com/Shruthikshetty/chat-ai/actions/runs/20877121369/artifacts/5084711158
+
+## 📝 License
+
+MIT
