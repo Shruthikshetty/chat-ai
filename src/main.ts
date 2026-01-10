@@ -74,13 +74,6 @@ app.on("ready", () => {
   createWindow();
 });
 
-app.on("before-quit", () => {
-  if (ollamaProcess) {
-    console.log("Killing Ollama server...");
-    ollamaProcess.kill();
-  }
-});
-
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
 // explicitly with Cmd + Q.
