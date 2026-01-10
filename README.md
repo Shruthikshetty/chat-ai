@@ -1,41 +1,67 @@
 # Chat AI
 
-A modern desktop AI chat application built with Electron and React, designed specifically for interacting with local AI models like Ollama.
+A modern, desktop AI chat application built with Electron and React, designed specifically for seamless interaction with local AI models via Ollama.
 
-## 🚀 Tech Stack
-
-- **Electron**: Desktop runtime
-- **Vite**: Build tool and bundler
-- **React**: UI library
-- **TypeScript**: Type safety
-- **Tailwind CSS v4**: Utility-first styling
-- **Radix UI**: Accessible UI primitives
-- **Lucide React**: Icons
+![Chat AI Screenshot](./assets/screenshot.png)
 
 ## ✨ Features
 
-- **Local AI Focus**: Optimized for chatting with local models (e.g., via Ollama).
-- **Modern Interface**: Clean, responsive UI with a collapsible sidebar.
-- **Session Management**: Organized chat history and session navigation.
-- **Model Management**: UI for managing and selecting your local AI models.
+- **🤖 Local AI First**: Deep integration with [Ollama](https://ollama.com/) for private, local inference.
+- **🗣️ Voice Interaction**: Text-to-speech capabilities powered by **Kokoro JS** for a natural voice experience.
+- **💬 Rich Chat Experience**: Full Markdown support, code highlighting, and smooth streaming responses.
+- **🎨 Modern UI**: Beautiful, dark-themed interface built with **Tailwind CSS v4** and **Radix UI**.
+- **📂 Session Management**: Easily organize and navigate through your chat history.
+- **⚙️ Model Control**: Switch between different local models on the fly.
 
-## 🛠️ Development
+## 🚀 Tech Stack
 
-To start the application in development mode:
+- **[Electron](https://www.electronjs.org/)**: Cross-platform desktop runtime.
+- **[Vite](https://vitejs.dev/)**: Lightning-fast build tool and bundler.
+- **[React](https://react.dev/)**: For building interactive UIs.
+- **[TypeScript](https://www.typescriptlang.org/)**: Application-scale JavaScript with types.
+- **[Tailwind CSS v4](https://tailwindcss.com/)**: Utility-first CSS framework.
+- **[Kokoro JS](https://github.com/kokoro-js/kokoro-js)**: High-quality AI voice synthesis.
 
-```bash
-npm start
-```
+## 🛠️ Getting Started
 
-To package the application:
+### Prerequisites
+
+- [Node.js](https://nodejs.org/) (v18 or higher recommended)
+- [Ollama](https://ollama.com/) running locally
+
+### Installation
+
+1.  Clone the repository:
+
+    ```bash
+    git clone https://github.com/Shruthikshetty/chat-ai.git
+    cd chat-ai
+    ```
+
+2.  Install dependencies:
+
+    ```bash
+    npm install
+    ```
+
+3.  Start the application:
+    ```bash
+    npm start
+    ```
+
+### Building for Production
+
+To create a distributable package for your OS:
 
 ```bash
 npm run package
 ```
 
-## 📦 Installation
+## 📦 Downloads
 
-https://github.com/Shruthikshetty/chat-ai/actions/runs/20877121369/artifacts/5084711158
+You can find the latest build artifacts in the GitHub Actions tab.
+
+[View Latest Builds](https://github.com/Shruthikshetty/chat-ai/actions)
 
 ## 📝 License
 
