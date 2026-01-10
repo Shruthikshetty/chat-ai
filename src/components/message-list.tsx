@@ -7,6 +7,8 @@ import { useState } from "react";
 // @ts-ignore
 import generatedImage from "@/assets/bot-icon.png";
 
+//@TODO This file needs refactorring !!
+
 interface MessageListProps {
   messages: Message[];
   isLoading?: boolean;
@@ -32,48 +34,9 @@ export function MessageList({ messages, isLoading }: MessageListProps) {
 
   const handleCopy = async (text: string, id: string) => {
     await navigator.clipboard.writeText(text);
-    setCopiedId(id);
+    setCopiedId(id.toString());
     setTimeout(() => setCopiedId(null), 2000);
   };
-
-  if (messages.length === 0) {
-    return (
-      <div className="flex-1 flex flex-col items-center justify-center p-8 text-center animate-in fade-in zoom-in duration-500">
-        <div className="w-24 h-24 mb-8 rounded-full bg-secondary/30 flex items-center justify-center border border-border/50 shadow-2xl shadow-primary/5">
-          <img
-            src={generatedImage}
-            alt="AI Logo"
-            className="w-16 h-16 opacity-80"
-          />
-        </div>
-        <h2 className="text-2xl font-semibold mb-2 tracking-tight">
-          How can I help you today?
-        </h2>
-        <p className="text-muted-foreground max-w-md mb-8">
-          I'm running locally on your machine. All conversations are private and
-          secure.
-        </p>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-2xl">
-          {[
-            "Explain quantum computing",
-            "Write a Python script for scraping",
-            "How does a neural network work?",
-            "Draft a professional email",
-          ].map((suggestion, i) => (
-            <button
-              key={i}
-              className="p-4 rounded-xl bg-secondary/20 border border-border/50 hover:bg-secondary/50 hover:border-primary/20 transition-all text-left text-sm text-muted-foreground hover:text-foreground group"
-            >
-              <span className="group-hover:translate-x-1 transition-transform inline-block">
-                → {suggestion}
-              </span>
-            </button>
-          ))}
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="flex-1 overflow-y-auto px-4 py-8 scroll-smooth">
@@ -151,9 +114,11 @@ export function MessageList({ messages, isLoading }: MessageListProps) {
                   variant="ghost"
                   size="icon"
                   className="h-6 w-6 text-muted-foreground hover:text-foreground"
-                  onClick={() => handleCopy(message.content, message.id)}
+                  onClick={() =>
+                    handleCopy(message.content, message.id.toString())
+                  }
                 >
-                  {copiedId === message.id ? (
+                  {copiedId === message.id.toString() ? (
                     <Check className="w-3.5 h-3.5" />
                   ) : (
                     <Copy className="w-3.5 h-3.5" />
@@ -165,9 +130,12 @@ export function MessageList({ messages, isLoading }: MessageListProps) {
                     size="icon"
                     className={cn(
                       "h-6 w-6 text-muted-foreground hover:text-foreground",
-                      speakingId === message.id && "text-primary animate-pulse"
+                      speakingId === message.id.toString() &&
+                        "text-primary animate-pulse"
                     )}
-                    onClick={() => handleSpeak(message.content, message.id)}
+                    onClick={() =>
+                      handleSpeak(message.content, message.id.toString())
+                    }
                   >
                     <Volume2 className="w-3.5 h-3.5" />
                   </Button>

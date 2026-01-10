@@ -4,37 +4,37 @@ import { MessageInput } from "@/components/message-input";
 import { MessageList } from "@/components/message-list";
 import { useState } from "react";
 import { Message } from "@/lib/types";
-import { createOllama } from "ollama-ai-provider-v2";
 import { generateText } from "ai";
-
-//initialize the ollama provider
-const ollama = createOllama({
-  baseURL: "http://localhost:11434/api",
-});
+import { ollama } from "@/config/olama.config";
+import { ModelInitialMessage } from "@/constants/screen.constants";
 
 const Home = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: "1",
-      role: "assistant",
-      content: "Hello! How can I help you today?",
-      timestamp: Date.now(),
-    },
-  ]);
+  const [messages, setMessages] = useState<Message[]>([ModelInitialMessage]);
 
-  // handle send mesage
-  const handleSend = async (message: string) => {
-    // add the user message
+  // function to add a new message
+  const addMessage = ({
+    message,
+    role,
+  }: {
+    message: string;
+    role: "user" | "assistant";
+  }) => {
     setMessages((prev) => [
       ...prev,
       {
-        id: (Number(prev[prev.length - 1].id) + 1).toString(),
-        role: "user",
+        id: Number(prev[prev.length - 1].id) + 1,
+        role,
         content: message,
         timestamp: Date.now(),
       },
     ]);
+  };
+
+  // handle send mesage
+  const handleSend = async (message: string) => {
+    // add the user message
+    addMessage({ message, role: "user" });
 
     // generate reponse
     const { text } = await generateText({
@@ -42,18 +42,8 @@ const Home = () => {
       prompt: message,
     });
 
-    // temp
-    console.log(text);
     // append the message to the messages state
-    setMessages((prev) => [
-      ...prev,
-      {
-        id: (Number(prev[prev.length - 1].id) + 1).toString(),
-        role: "assistant",
-        content: text,
-        timestamp: Date.now(),
-      },
-    ]);
+    addMessage({ message: text, role: "assistant" });
   };
 
   return (

@@ -1,19 +1,19 @@
 export interface Message {
-  id: string;
+  id: number;
   role: "user" | "assistant";
   content: string;
   timestamp: number;
 }
 
 export interface Model {
-  id: string;
+  id: number;
   name: string;
   description?: string;
   tags?: string[];
 }
 
 export interface ChatSession {
-  id: string;
+  id: number;
   title: string;
   messages: Message[];
   modelId: string;
