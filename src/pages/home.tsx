@@ -59,7 +59,10 @@ const Home = () => {
     // generate reponse
     const { text } = await generateText({
       model: ollama(selectedModel?.id),
-      prompt: message,
+      messages: messages.map((mess) => ({
+        role: mess.role,
+        content: mess.content,
+      })),
     });
     setLoading(false);
     // append the message to the messages state
