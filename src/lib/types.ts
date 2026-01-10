@@ -6,7 +6,7 @@ export interface Message {
 }
 
 export interface Model {
-  id: number;
+  id: string;
   name: string;
   description?: string;
   tags?: string[];
